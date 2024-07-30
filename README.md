@@ -19,6 +19,7 @@ Once done, install the dependencies using yarn
 ```yarn install```
 
 The `bridgeETH.js` file shows an example of bridging 0.01 ETH from Polygon zkEVM Cardona testnet to Sepolia testnet. To bridge a native token, the ETH token contract address is nothing but a Zero Address (0x0000000000000000000000000000000000000000) .To bridge a custom ERC20 between AggLayer Chains, just change the token contract address in `constants.js` file 
+
 ** Note : If you are bridging custom ERC20 token, you need to approve contract to spend the amount of tokens on your behalf **
 
  
