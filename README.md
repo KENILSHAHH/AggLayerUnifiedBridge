@@ -12,5 +12,9 @@ Go to the root directory
 
 Create a .env file in the root directory and copy paste the content of *.env.example* file into your .env file. 
 
-Enter your wallet's private key. Its recommended to use private rpc endpoints from Alchemy or Infura
+Enter your wallet's private key. Its recommended to use rpc endpoints from Alchemy or Infura
+
+Once done, install the dependencies using yarn
+
+```yarn install```
  
