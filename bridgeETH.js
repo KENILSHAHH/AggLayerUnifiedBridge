@@ -3,14 +3,15 @@
 import { ethers } from 'ethers';
 import dotenv from 'dotenv';
 import UnifiedBridge from './abi/UnifiedBridge.js';
+import constants from './constants.json' assert { type: 'json' };
 
 const _GLOBAL_INDEX_MAINNET_FLAG = BigInt(2 ** 64);
 async function bridgeAsset() {
   dotenv.config();
   const networkArray = [
-    process.env.SEPOLIA_RPC,
-    process.env.POLYGON_ZKEVM_CARDONA_RPC,
-    process.env.ASTAR_ZKYOTO_RPC,
+    constants.SEPOLIA_RPC,
+    constants.POLYGON_ZKEVM_CARDONA_RPC,
+    constants.ASTAR_ZKYOTO_RPC
   ];
 
   function computeGlobalIndex(indexLocal, sourceNetworkId) {
@@ -25,8 +26,8 @@ async function bridgeAsset() {
     '0x528e26b25a34a4a5d0dbda1d57d318153d2ed582';
   const sourceNetwork = networkArray[1];
   const destinationNetwork = 0; //    [sepolia, zkEVMCardona, astarZkyoto]
-  const destinationAddress = '0x027fe3f132403C1B59DDAbA14B576D15865F69C0';
-  const tokenAddress = '0x585bab80CEFF8BA90FCB29A4461Cc2Cf55253445';
+  const destinationAddress = constants.destinationAddress;
+  const tokenAddress = constants.tokenContractAddress;
   const tokenAmount = 1000000000000000000n;
   const forceUpdateGlobalExitRoot = true; //do not change this
   const sourceProvider = new ethers.providers.JsonRpcProvider(
