@@ -11,16 +11,16 @@ async function bridgeAsset() {
   const networkArray = [
     constants.SEPOLIA_RPC,
     constants.POLYGON_ZKEVM_CARDONA_RPC,
-    constants.ASTAR_ZKYOTO_RPC
+    constants.ASTAR_ZKYOTO_RPC,
   ];
 
-  function computeGlobalIndex(indexLocal, sourceNetworkId) {
-    if (BigInt(sourceNetworkId) === BigInt(0)) {
-      return BigInt(indexLocal) + _GLOBAL_INDEX_MAINNET_FLAG;
-    } else {
-      return BigInt(indexLocal) + BigInt(sourceNetworkId - 1) * BigInt(2 ** 32);
-    }
-  }
+  // function computeGlobalIndex(indexLocal, sourceNetworkId) {
+  //   if (BigInt(sourceNetworkId) === BigInt(0)) {
+  //     return BigInt(indexLocal) + _GLOBAL_INDEX_MAINNET_FLAG;
+  //   } else {
+  //     return BigInt(indexLocal) + BigInt(sourceNetworkId - 1) * BigInt(2 ** 32);
+  //   }
+  // }
   const privateKey = process.env.PRIVATE_KEY;
   const unifiedBridgeContractAddress =
     '0x528e26b25a34a4a5d0dbda1d57d318153d2ed582';
@@ -83,72 +83,70 @@ async function bridgeAsset() {
   await txn.wait(2);
   const txnHash = txn.hash;
   console.log(txnHash);
- 
+
   setTimeout(async () => {
-      const api = `https://api-gateway.polygon.technology/api/v3/merkle-proof/testnet?networkId=1&depositCount=${depositCount}`;
-      try {
-        const apiRes = await fetch(api);
+    const api = `https://api-gateway.polygon.technology/api/v3/merkle-proof/testnet?networkId=1&depositCount=${depositCount}`;
+    try {
+      const apiRes = await fetch(api);
 
-        if (apiRes.ok) {
-          const apiResBlob = await apiRes.blob();
-          const apiResText = await apiResBlob.text();
-          const apiResJson = JSON.parse(apiResText);
-          merkleProof = apiResJson.proof;
-        } else {
-          console.error('HTTP error', apiRes.status, apiRes.statusText);
-        }
-      } catch (error) {
-        console.error('Fetch error', error);
+      if (apiRes.ok) {
+        const apiResBlob = await apiRes.blob();
+        const apiResText = await apiResBlob.text();
+        const apiResJson = JSON.parse(apiResText);
+        merkleProof = apiResJson.proof;
+      } else {
+        console.error('HTTP error', apiRes.status, apiRes.statusText);
       }
-      const payLoadData = {
-        smtProof: merkleProof.merkle_proof,
-        smtProofRollup: merkleProof.rollup_merkle_proof,
-        globalIndex: computeGlobalIndex(depositCount, 1).toString(),
-        mainnetExitRoot: merkleProof.main_exit_root,
-        rollupExitRoot: merkleProof.rollup_exit_root,
-        originNetwork: originNetwork,
-        originAddress: originAddress,
-        destinationNetwork: destinationNetwork,
-        destinationAddress: destinationAddress,
-        amount: amount,
-        metadata: metadata,
-      };
-      console.log(payLoadData);
+    } catch (error) {
+      console.error('Fetch error', error);
+    }
+    const payLoadData = {
+      smtProof: merkleProof.merkle_proof,
+      smtProofRollup: merkleProof.rollup_merkle_proof,
+      globalIndex: depositCount.toString(),
+      mainnetExitRoot: merkleProof.main_exit_root,
+      rollupExitRoot: merkleProof.rollup_exit_root,
+      originNetwork: originNetwork,
+      originAddress: originAddress,
+      destinationNetwork: destinationNetwork,
+      destinationAddress: destinationAddress,
+      amount: amount,
+      metadata: metadata,
+    };
+    console.log(payLoadData);
 
-      const destinationProvider = new ethers.providers.JsonRpcProvider(
-        `${networkArray[0]}`
+    const destinationProvider = new ethers.providers.JsonRpcProvider(
+      `${networkArray[0]}`
+    );
+    const destinationWallet = new ethers.Wallet(
+      privateKey,
+      destinationProvider
+    );
+    const destinationContract = new ethers.Contract(
+      unifiedBridgeContractAddress,
+      UnifiedBridge,
+      destinationWallet
+    );
+    const isClaimed = await destinationContract.isClaimed(depositCount, 1);
+    console.log(isClaimed);
+    if (isClaimed == false) {
+      const claimTxn = await destinationContract.claimAsset(
+        payLoadData.smtProof,
+        payLoadData.smtProofRollup,
+        payLoadData.globalIndex,
+        payLoadData.mainnetExitRoot,
+        payLoadData.rollupExitRoot,
+        payLoadData.originNetwork,
+        payLoadData.originAddress,
+        payLoadData.destinationNetwork,
+        payLoadData.destinationAddress,
+        payLoadData.amount,
+        payLoadData.metadata
       );
-      const destinationWallet = new ethers.Wallet(
-        privateKey,
-        destinationProvider
-      );
-      const destinationContract = new ethers.Contract(
-        unifiedBridgeContractAddress,
-        UnifiedBridge,
-        destinationWallet
-      );
-     const isClaimed = await destinationContract.isClaimed(depositCount, 1)
-     console.log(isClaimed)
-     if (isClaimed == false) {
-       const claimTxn = await destinationContract.claimAsset(
-         payLoadData.smtProof,
-         payLoadData.smtProofRollup,
-         payLoadData.globalIndex,
-         payLoadData.mainnetExitRoot,
-         payLoadData.rollupExitRoot,
-         payLoadData.originNetwork,
-         payLoadData.originAddress,
-         payLoadData.destinationNetwork,
-         payLoadData.destinationAddress,
-         payLoadData.amount,
-         payLoadData.metadata
-       );
-       await claimTxn.wait(2)
-       console.log(claimTxn.hash)
-     }
-   }, 60 * 60 * 1000);
-
-
+      await claimTxn.wait(2);
+      console.log(claimTxn.hash);
+    }
+  }, 60 * 60 * 1000);
 
   //   console.log(data)
 }
