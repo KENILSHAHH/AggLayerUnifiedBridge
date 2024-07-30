@@ -9,4 +9,7 @@ To get started with the project, clone the project
 Go to the root directory
 
 ```cd AggLayerUnifiedBridge```
+
+Create a .env file in the root directory and copy paste the content of *.env.example* file into your .env file. 
+Enter your wallet's private key. Its recommended to use private rpc endpoints from Alchemy or Infura
  
