@@ -4,5 +4,5 @@ This is simple tutorial to explain the lifecycle of bridging assets to and fro f
 
 To get started with the project, clone the project and go to the root directory
 
-``` git clone https://github.com/KENILSHAHH/AggLayerUnifiedBridge 
-cd  ```
+`git clone 
+djkif`
