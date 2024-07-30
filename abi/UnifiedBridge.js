@@ -1,4 +1,4 @@
- [
+ export default [
   { inputs: [], stateMutability: 'nonpayable', type: 'constructor' },
   { inputs: [], name: 'AlreadyClaimed', type: 'error' },
   { inputs: [], name: 'AmountDoesNotMatchMsgValue', type: 'error' },
