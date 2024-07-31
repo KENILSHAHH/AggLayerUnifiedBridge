@@ -30,7 +30,8 @@ The `bridgeETH.js` file shows an example of bridging 0.01 ETH from Polygon zkEVM
 
 Any ERC20 asset can be bridged with the help of Unified Bridge across AggLayer Chains
 
-This can be done by hitting the below function in UnifiedBridge Contract with the given params
+This can be done by hitting the below function in [Unified Bridge Contract](https://github.com/0xPolygonHermez/zkevm-contracts/blob/main/contracts/v2/PolygonZkEVMBridgeV2.sol)
+ with the given params.An example can be found in the `bridgeETH.js` file in the repo
 
 ```solidity 
 function bridgeAsset(
