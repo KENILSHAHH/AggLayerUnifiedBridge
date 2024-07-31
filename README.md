@@ -3,17 +3,16 @@
 This is simple tutorial to explain the lifecycle of bridging assets to and fro from chains connected AggLayer using [Unified Bridge Contract](https://github.com/0xPolygonHermez/zkevm-contracts/blob/main/contracts/v2/PolygonZkEVMBridgeV2.sol)
 
 
-### Basic architecture of the Unified Bridge 
+# Basic architecture of the Unified Bridge 
 <img width="617" alt="Screenshot 2024-07-31 at 3 39 35 PM" src="https://github.com/user-attachments/assets/90b496fc-4cee-4d40-84b4-89bba762accd">
 
-### Get Started
+# Get Started
 
 To get started with the project, clone the project and go to the root directory
 
 ```
 git clone https://github.com/KENILSHAHH/AggLayerUnifiedBridge
 cd AggLayerUnifiedBridge
-
 ```
 
 Create a .env file in the root directory and copy paste the content of *.env.example* file into your .env file. 
@@ -22,17 +21,19 @@ Enter your wallet's private key. Its recommended to use rpc endpoints from Alche
 
 Once done, install the dependencies using yarn
 
-```yarn install```
+```
+yarn install
+```
 
 The `bridgeETH.js` file shows an example of bridging 0.01 ETH from Polygon zkEVM Cardona testnet to Sepolia testnet. To bridge a native token, the ETH token contract address is nothing but a Zero Address (0x0000000000000000000000000000000000000000) .To bridge a custom ERC20 between AggLayer Chains, just change the token contract address in `constants.js` file 
 
 **Note : If you are bridging custom ERC20 token, you need to approve contract to spend the amount of tokens on your behalf**
 
-### Lifecycle of a bridge transaction
+# Lifecycle of a bridge transaction
 
 Any ERC20 asset can be bridged with the help of Unified Bridge across AggLayer Chains
 
-This can be done by hitting the below function in [Unified Bridge Contract](https://github.com/0xPolygonHermez/zkevm-contracts/blob/main/contracts/v2/PolygonZkEVMBridgeV2.sol)
+This can be done by hitting the [bridgeAsset](https://github.com/0xPolygonHermez/zkevm-contracts/blob/a5eacc6e51d7456c12efcabdfc1c37457f2219b2/contracts/v2/PolygonZkEVMBridgeV2.sol#L204C5-L211C7) function in [Unified Bridge Contract](https://github.com/0xPolygonHermez/zkevm-contracts/blob/main/contracts/v2/PolygonZkEVMBridgeV2.sol)
  with the given params.An example can be found in the `bridgeETH.js` file in the repo
 
 ```solidity 
@@ -45,6 +46,22 @@ function bridgeAsset(
         bytes calldata permitData       // "0x"
     )
 ```
+
+Once the transaction is successful on the source chain, an [event](https://github.com/0xPolygonHermez/zkevm-contracts/blob/a5eacc6e51d7456c12efcabdfc1c37457f2219b2/contracts/v2/PolygonZkEVMBridgeV2.sol#L97C3-L106C7) `BridgeEvent` is emitted which looks like below 
+
+```solidity
+  event BridgeEvent(
+        uint8 leafType,
+        uint32 originNetwork,
+        address originAddress,
+        uint32 destinationNetwork,
+        address destinationAddress,
+        uint256 amount,
+        bytes metadata,
+        uint32 depositCount
+    );
+```
+It is vital to listen to the event and get depositCount variable required for generation of merkle proof
 
 
 
