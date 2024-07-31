@@ -8,7 +8,10 @@ To get started with the project, clone the project
 
 Go to the root directory
 
-```cd AggLayerUnifiedBridge```
+```
+cd AggLayerUnifiedBridge
+cd jd
+```
 
 Create a .env file in the root directory and copy paste the content of *.env.example* file into your .env file. 
 
