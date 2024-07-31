@@ -26,3 +26,22 @@ The `bridgeETH.js` file shows an example of bridging 0.01 ETH from Polygon zkEVM
 <img width="617" alt="Screenshot 2024-07-31 at 3 39 35 PM" src="https://github.com/user-attachments/assets/90b496fc-4cee-4d40-84b4-89bba762accd">
 
 
+### Lifecycle of a bridge transaction
+
+Any ERC20 asset can be bridged with the help of Unified Bridge across AggLayer Chains
+
+This can be done by hitting the below function in UnifiedBridge Contract with the given params
+
+```solidity 
+function bridgeAsset(
+        uint32 destinationNetwork,      // networkd id which is either 0,1,2 for sepolia, polygonZkEVMCardona, astar zKyoto respectively
+        address destinationAddress,     // destination Ethereum wallet address  
+        uint256 amount,                 // Amount of tokens to be bridged (e.g for 1 Ether :- amount = 1000000000000000000n)
+        address token,                  // erc20 token address (ZERO ADDRESS in case of ETHER)
+        bool forceUpdateGlobalExitRoot, // true
+        bytes calldata permitData       // "0x"
+    )
+```
+
+
+
