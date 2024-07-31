@@ -2,15 +2,12 @@
 
 This is simple tutorial to explain the lifecycle of bridging assets to and fro from chains connected AggLayer using [Unified Bridge Contract](https://github.com/0xPolygonHermez/zkevm-contracts/blob/main/contracts/v2/PolygonZkEVMBridgeV2.sol)
 
-To get started with the project, clone the project 
-
-```git clone https://github.com/KENILSHAHH/AggLayerUnifiedBridge ```
-
-Go to the root directory
+To get started with the project, clone the project and go to the root directory
 
 ```
+git clone https://github.com/KENILSHAHH/AggLayerUnifiedBridge
 cd AggLayerUnifiedBridge
-cd jd
+
 ```
 
 Create a .env file in the root directory and copy paste the content of *.env.example* file into your .env file. 
