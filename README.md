@@ -22,4 +22,7 @@ The `bridgeETH.js` file shows an example of bridging 0.01 ETH from Polygon zkEVM
 
 **Note : If you are bridging custom ERC20 token, you need to approve contract to spend the amount of tokens on your behalf**
 
- 
+### Basic architecture of the Unified Bridge 
+<img width="617" alt="Screenshot 2024-07-31 at 3 39 35 PM" src="https://github.com/user-attachments/assets/90b496fc-4cee-4d40-84b4-89bba762accd">
+
+
