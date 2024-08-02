@@ -1,6 +1,6 @@
 # Unified Bridge
 
-This is simple tutorial to explain the lifecycle of bridging assets to and fro from chains connected to AggLayer using [Unified Bridge Contract](https://github.com/0xPolygonHermez/zkevm-contracts/blob/main/contracts/v2/PolygonZkEVMBridgeV2.sol) | [Contract Address](https://sepolia.etherscan.io/address/0x528e26b25a34a4A5d0dbDa1d57D318153d2ED582) | 
+This is simple tutorial to explain the lifecycle of bridging assets to and fro from chains connected to AggLayer using [Unified Bridge Contract](https://github.com/0xPolygonHermez/zkevm-contracts/blob/main/contracts/v2/PolygonZkEVMBridgeV2.sol) | [Contract Address](https://sepolia.etherscan.io/address/0x528e26b25a34a4A5d0dbDa1d57D318153d2ED582) 
 
 
 **Basic architecture of the Unified Bridge**
